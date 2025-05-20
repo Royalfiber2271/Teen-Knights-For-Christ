@@ -1,0 +1,202 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1" />  
+    <title>Music Library | Teen Knights of Christ</title>  
+    <style>  
+        body {  
+            background: #222;  
+            color: white;  
+            font-family: Arial, sans-serif;  
+            max-width: 700px;  
+            margin: auto;  
+            padding: 20px;  
+        }  
+        h1 {  
+            text-align: center;  
+        }  
+        #music-list {  
+            list-style: none;  
+            padding-left: 0;  
+        }  
+        #music-list li {  
+            background: rgba(255, 255, 255, 0.1);  
+            margin: 8px 0;  
+            padding: 10px;  
+            border-radius: 4px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+        }  
+        .button-group {  
+            display: flex;  
+            gap: 8px; /* Space between buttons */  
+        }  
+        #upload-area {  
+            margin-top: 20px;  
+            text-align: center;  
+        }  
+        audio {  
+            margin-top: 20px;  
+            width: 100%;  
+            outline: none;  
+        }  
+    </style>  
+</head>  
+<body>  
+
+<h1>Teen Knights of Christ Music Library</h1>  
+<div style="text-align:center; margin-bottom: 20px;">  
+    <a href="TKC.html"  
+       style="display:inline-block; padding:8px 16px; background:#444; color:white; text-decoration:none; border-radius:4px; font-weight:bold;">  
+        &larr; Back to TKC Homepage  
+    </a>  
+</div>  
+
+<!-- Audio player -->  
+<audio id="audio-player" controls></audio>  
+
+<!-- Music list -->  
+<ul id="music-list">Loading music list...</ul>  
+
+<!-- Upload area -->  
+<div id="upload-area">  
+    <input type="file" id="music-upload" accept="audio/*" />  
+    <button id="upload-button">Upload</button>  
+</div>  
+
+<script>  
+    const BACKEND_URL = 'http://localhost:3000';  
+
+    const musicListElem = document.getElementById('music-list');  
+    const audioPlayer = document.getElementById('audio-player');  
+    const uploadInput = document.getElementById('music-upload');  
+    const uploadButton = document.getElementById('upload-button');  
+
+    let currentSongIndex = -1; // Tracks the current song index  
+    let songList = []; // Store the list of songs for easy access  
+
+    // Load the music list from backend  
+    async function loadMusicList() {  
+        musicListElem.innerHTML = 'Loading music list...';  
+        try {  
+            const res = await fetch(BACKEND_URL + '/music-list');  
+            if (!res.ok) throw new Error('Failed to fetch music list');  
+            songList = await res.json(); // Store the fetched song list  
+
+            if (songList.length === 0) {  
+                musicListElem.innerHTML = '<li>No music files uploaded yet.</li>';  
+                audioPlayer.src = '';  
+                return;  
+            }  
+
+            musicListElem.innerHTML = '';  
+            songList.forEach((filename, index) => {  
+                const li = document.createElement('li');  
+                li.textContent = filename;  
+
+                const buttonGroup = document.createElement('div');  
+                buttonGroup.className = 'button-group';  
+
+                const playBtn = document.createElement('button');  
+                playBtn.textContent = 'Play';  
+                playBtn.onclick = () => {  
+                    playSong(index); // Play song by index  
+                };  
+
+                const delBtn = document.createElement('button');  
+                delBtn.textContent = 'Delete';  
+                delBtn.onclick = async () => {  
+                    if (confirm(`Are you sure you want to delete "${filename}"?`)) {  
+                        try {  
+                            const deleteRes = await fetch(BACKEND_URL + '/delete/' + encodeURIComponent(filename), {  
+                                method: 'DELETE'  
+                            });  
+                            const deleteData = await deleteRes.json();  
+                            if (deleteData.success) {  
+                                alert('Deleted successfully!');  
+                                if (audioPlayer.src.endsWith(filename)) {  
+                                    audioPlayer.pause();  
+                                    audioPlayer.src = '';  
+                                }  
+                                loadMusicList();  
+                            } else {  
+                                alert('Failed to delete the file.');  
+                            }  
+                        } catch (err) {  
+                            alert('Error deleting the file.');  
+                            console.error('Delete error:', err);  
+                        }  
+                    }  
+                };  
+
+                buttonGroup.appendChild(playBtn);  
+                buttonGroup.appendChild(delBtn);  
+                li.appendChild(buttonGroup);  
+                musicListElem.appendChild(li);  
+            });  
+        } catch (err) {  
+            console.error('Error loading music list:', err);  
+            musicListElem.innerHTML = '<li>Error loading music list. See console for details.</li>';  
+        }  
+    }  
+
+    function playSong(index) {  
+        if (index < 0 || index >= songList.length) return; // Boundary check  
+        currentSongIndex = index; // Update current song index  
+        audioPlayer.src = BACKEND_URL + '/music/' + encodeURIComponent(songList[currentSongIndex]);  
+        audioPlayer.play();  
+    }  
+
+    audioPlayer.addEventListener('ended', () => {  
+        // Play the next song when the current one ends  
+        const nextIndex = currentSongIndex + 1; // Next song index  
+        if (nextIndex < songList.length) {  
+            playSong(nextIndex); // Play the next song  
+        }  
+    });  
+
+    // Upload music file handler  
+    uploadButton.onclick = async () => {  
+        const file = uploadInput.files[0];  
+        if (!file) {  
+            alert('Please select a file first.');  
+            return;  
+        }  
+
+        const formData = new FormData();  
+        formData.append('musicFile', file);  
+
+        try {  
+            uploadButton.disabled = true;  
+            uploadButton.textContent = 'Uploading...';  
+
+            const res = await fetch(BACKEND_URL + '/upload', {  
+                method: 'POST',  
+                body: formData  
+            });  
+            const data = await res.json();  
+
+            if (data.success) {  
+                alert('Upload succeeded!');  
+                uploadInput.value = '';  
+                loadMusicList();  
+            } else {  
+                alert('Upload failed!');  
+            }  
+        } catch (err) {  
+            alert('Upload error! See console.');  
+            console.error('Upload error:', err);  
+        } finally {  
+            uploadButton.disabled = false;  
+            uploadButton.textContent = 'Upload';  
+        }  
+    };  
+
+    // Initial load  
+    loadMusicList();  
+</script>  
+
+</body>  
+</html>

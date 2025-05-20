@@ -1,0 +1,40 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>About Us</title>    
+    <link rel="stylesheet" href="about_us_styles.css">
+</head>  
+<body>  
+    <div class="container">  
+        <header>  
+            <div class="navbar">  
+                <a class="nav-button" id="home" href="index.html">Home</a>  
+            </div>  
+        </header>  
+        <main>
+            <div class="background-container"> 
+            </div>              
+            <div class="overlay-container"> <!-- Added a container for the text -->  
+                <h1>Teen Knights For Christ is a platform via which Christian teenagers from all over the world can chat and encourage each other in the LORD. </h1>  
+                <p>Have any questions? Check out our FAQ via the button in the TKC homepage. </p>  
+            </div>  
+        </main>  
+    </div>  
+<script>  
+    function handleButtonClick(buttonId) {  
+        switch (buttonId) {  
+            case 'home':  
+                window.location.href = 'TKC.html';  
+                break;  
+        }  
+    }   
+
+    document.getElementById('home').addEventListener('click', function(event) {  
+        event.preventDefault();  
+        handleButtonClick('home');  
+    });  
+</script>  
+</body>  
+</html>

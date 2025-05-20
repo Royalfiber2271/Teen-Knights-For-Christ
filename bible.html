@@ -1,0 +1,90 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Online Bible</title>  
+    <link rel="stylesheet" href="bible_styles.css"> <!-- Link to your CSS file -->  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: #202020;  
+            margin: 20px;  
+            padding: 20px;  
+            border-radius: 10px;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);  
+        }  
+
+        h1 {  
+            margin-bottom: 20px;  
+            text-align: center;  
+        }  
+
+        select {  
+            padding: 10px;  
+            font-size: 16px;  
+            margin-bottom: 20px;  
+        }  
+
+        iframe {  
+            width: 100%;  
+            height: 600px; /* Adjust height as needed */  
+            border: none;  
+            border-radius: 10px;  
+            box-shadow: 0 0 5px rgba(0, 0, 0, 1);  
+        }  
+    </style>  
+</head>  
+<body> 
+    <div class="container">
+        <header>
+            <div classs="navbar">
+                <a class="nav-button" id="home" href="index.html">Home</a>
+            </div>
+        </header>
+    <h1>Select a Bible Version</h1>  
+    <select id="bible-select">  
+        <option value="">--Select Bible Version--</option>  
+        <option value="nasb">NASB</option>  
+        <option value="nkjv">NKJV</option>  
+        <option value="niv">NIV</option>  
+    </select>  
+
+    <iframe id="bible-iframe" src="" title="Bible View"></iframe>  
+
+    <script>
+    function handleButtonClick(buttonId) {  
+        switch (buttonId) {  
+            case 'home':  
+                window.location.href = 'index.html';  
+                break;  
+        }  
+    }   
+
+    document.getElementById('home').addEventListener('click', function(event) {  
+        event.preventDefault();  
+        handleButtonClick('home');  
+    });    
+        const bibleSelect = document.getElementById('bible-select');  
+        const bibleIframe = document.getElementById('bible-iframe');  
+
+        // Object to hold the URLs of different Bible versions  
+        const bibleUrls = {  
+            nasb: 'https://bible.com/bible/100/JHN1.1.NASB',  
+            nkjv: 'https://bible.com/bible/114/JHN1.1.NKJV',  
+            niv: 'https://bible.com/bible/111/JHN1.1.NIV'  
+        };  
+
+        // Event listener for the dropdown selection  
+        bibleSelect.addEventListener('change', function() {  
+            const selectedVersion = this.value;  
+            
+            if (selectedVersion) {  
+                bibleIframe.src = bibleUrls[selectedVersion];  
+            } else {  
+                bibleIframe.src = ''; // Clear the iframe if no version is selected  
+            }  
+        });  
+    </script>  
+</body>  
+</html>

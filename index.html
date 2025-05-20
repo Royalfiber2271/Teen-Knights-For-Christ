@@ -1,0 +1,191 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Christ's Church Worldwide</title>  
+    <style>  
+        body {  
+            margin: 0;  
+            font-family: Arial, sans-serif;  
+            color: #333;  
+        }  
+
+        .container {  
+            position: relative; /* Enable positioning of absolute children */  
+            min-height: 100vh; /* Make full viewport height */  
+            overflow: hidden; /* Prevent overflow issues */  
+        }  
+
+        .background-container {  
+            background-image: url('Pics/Homepage.jpg'); /* Background Image URL */  
+            background-size: cover; /* Cover the entire area */  
+            background-position: center; /* Center the image */  
+            height: 100%; /* Full height */  
+            position: absolute; /* Positioned to fill the container */  
+            top: 0;  
+            left: 0;  
+            width: 100%; /* Full width */  
+            z-index: 1; /* Background behind everything */  
+        }  
+
+        .top-container {  
+            background-color: #343434; /* Green background */  
+            padding: 10px 0; /* Padding for top bar */  
+            text-align: center; /* Center text */  
+            position: relative; /* Ensure it is above the background */  
+            z-index: 2; /* Above the background image */  
+        }  
+
+        .navbar {  
+            display: flex;  
+            justify-content: center; /* Center items */  
+            flex-wrap: wrap; /* Allow items to wrap */  
+        }  
+
+        .nav-button {  
+            margin: 0 15px; /* Space between buttons */  
+            text-decoration: none;  
+            color: white;  
+            padding: 10px 15px;  
+            border-radius: 5px;  
+            transition: background 0.3s;  
+        }  
+
+        .nav-button:hover {  
+            background-color: #45a049; /* Darker green on hover */  
+        }  
+
+        .left-container {  
+            position: absolute; /* Absolute position for floating side button */  
+            top: 10%; /* Position from the top */  
+            left: 10%; /* Position from the left */  
+            background-color: rgba(134, 134,  134, 0.8); /* Light, semi-transparent background */  
+            padding: 15px;  
+            border-radius: 5px;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow for better visibility */  
+            z-index: 2; /* Above the background image */  
+        }  
+
+        .side-button {  
+            display: block; /* Block for side buttons */  
+            color: #333;   
+            text-decoration: none;  
+            padding: 10px 0;  
+            margin: 5px 0;  
+            transition: background 0.3s;  
+        }  
+
+        .side-button:hover {  
+            background-color: #ccc; /* Light grey on hover */  
+        }  
+
+        .welcome-container {  
+            position: absolute; /* Positioned in the center */  
+            top: 50%; /* Center vertically */  
+            left: 50%; /* Center horizontally */  
+            transform: translate(-50%, -50%); /* Adjust alignment */  
+            text-align: center; /* Center text */  
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */  
+            color: white; /* White text */  
+            padding: 20px;  
+            border-radius: 5px;  
+            z-index: 3; /* Above everything else */  
+        }  
+
+        /* Responsive styles */  
+        @media (max-width: 768px) {  
+            .navbar {  
+                flex-direction: column; /* Stack navbar items vertically */  
+                align-items: center;  
+            }  
+
+            .nav-button {  
+                margin: 5px 0; /* Adjust margins for smaller screens */  
+            }  
+
+            .left-container {  
+                left: 5%; /* Adjust left position for smaller screens */  
+                top: 5%; /* Adjust top position for smaller screens */  
+            }  
+        }  
+        
+        @media (max-width: 480px) {  
+            .nav-button, .side-button {  
+                padding: 8px 10px; /* Adjust padding for buttons */  
+            }  
+
+            .welcome-container {  
+                font-size: smaller; /* Smaller font size for mobile */  
+            }  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="container">  
+        <div class="background-container"></div> <!-- Background image container -->  
+        
+        <div class="top-container">  
+            <div class="navbar">  
+                <a class="nav-button" id="about" href="about.html">About Us</a>  
+                <a class="nav-button" id="contact" href="contact.html">Contact</a>  
+                <a class="nav-button" id="bible" href="bible.html">Bible</a>  
+                <a class="nav-button" id="teen-knights-of-christ" href="TKC.html">Teen Knights of Christ</a>  
+                <a class="nav-button" id="youtube" href="http://www.youtube.com/@christschurchonline-bozema6485">Youtube</a>  
+            </div>  
+        </div>  
+        
+        <div class="left-container">  
+            <a class="side-button" id="Sermons_&_Bible_Studies" href="https://newcreationstudies.org/">Sermons & Bible Studies</a>  
+            <a class="side-button" id="prayer_requests" href="prayer_requests.html">Prayer Requests</a>  
+        </div>  
+
+        <div class="welcome-container">  
+            <h1>Welcome to Christ's Church Worldwide</h1>  
+            <p>Here you'll find information about our events and community.</p>  
+        </div>  
+    </div>  
+
+<script>  
+    // Function to handle button click actions  
+    function handleButtonClick(buttonId) {  
+        switch (buttonId) {   
+            case 'about':  
+                window.location.href = 'about.html'; // Navigate to the About us page  
+                break;   
+            case 'contact':  
+                window.location.href = 'contact.html'; // Navigate to the contact page  
+                break;  
+            case 'home':  
+                window.location.href = 'index.html'; // Navigate to the homepage  
+                break;  
+            case 'bible':  
+                window.location.href = 'bible.html'; // Navigate to the bible page  
+                break;  
+            case 'teen-knights-of-christ':  
+                window.location.href = 'TKC.html'; // Navigate to the Teen page  
+                break;  
+            case 'youtube':  
+                window.location.href = 'http://www.youtube.com/@christschurchonline-bozema6485'; // Navigate to the youtube page  
+                break;                     
+            case 'Sermons_&_Bible_Studies':  
+                window.location.href = 'https://newcreationstudies.org/'; // Navigate to the sermons page  
+                break;  
+            case 'prayer_requests':  
+                window.location.href = 'prayer_requests.html'; // Navigate to prayer requests page  
+                break;        
+            default:  
+                console.log('Button action not defined!');  
+        }  
+    }  
+
+    // Add event listeners to side buttons  
+    document.querySelectorAll('.side-button').forEach(button => {  
+        button.addEventListener('click', function () {  
+            const buttonId = button.id; // Get the ID of the clicked button  
+            handleButtonClick(buttonId); // Handle the action  
+        });  
+    });  
+</script>  
+</body>  
+</html>

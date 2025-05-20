@@ -1,0 +1,163 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Prayer Requests - Christ's Church Worldwide</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 0;  
+            padding: 0;  
+            background-color: #f4f4f4;  
+        }  
+
+        .container {  
+            width: 80%;  
+            margin: auto;  
+            padding: 20px;  
+        }  
+
+        h1 {  
+            text-align: center;  
+        }  
+
+        .request-item {  
+            background: white;  
+            border-radius: 10px;  
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+            margin: 10px 0;  
+            padding: 15px;  
+            display: flex; /* Use flexbox to layout the item */  
+            justify-content: space-between; /* Space between request text and button */  
+            align-items: center; /* Center items vertically */  
+        }  
+
+        .remove-button {  
+            background: none; /* No background */  
+            border: none; /* No border */  
+            color: #ff4d4d; /* Remove button color */  
+            cursor: pointer; /* Pointer cursor on hover */  
+            font-size: 14px; /* Font size for remove button */  
+            text-decoration: underline; /* Underline text for subtle appearance */  
+        }  
+
+        .request-form {  
+            margin-top: 20px;  
+            text-align: center;  
+        }  
+
+        #request-input {  
+            width: 70%;   /* Adjusted width for the request input */  
+            padding: 10px;  
+            margin-right: 10px;  
+        }  
+
+        #name-input {  
+            width: 25%;   /* Smaller width for the name input */  
+            padding: 10px;  
+            margin-right: 10px; /* Small space with the submit button */  
+        }  
+
+        #submit-request {  
+            padding: 10px 20px;  
+        }  
+
+        .input-container {  
+            display: flex; /* Using flexbox to align inputs side by side */  
+            justify-content: center; /* Centering the input elements */  
+            margin-bottom: 15px; /* Space below the input fields */  
+        }  
+
+        /* Home button */  
+        .home-button {  
+            position: absolute; /* Positioning it at the top left */  
+            top: 20px; /* Distance from the top */  
+            left: 20px; /* Distance from the left */  
+            padding: 10px 15px; /* Size of the button */  
+            font-size: 16px; /* Font size */  
+            background-color: #008CBA; /* Button color */  
+            color: white; /* Text color */  
+            border: none; /* No border */  
+            border-radius: 5px; /* Rounded corners */  
+            cursor: pointer; /* Pointer on hover */  
+        }  
+
+        .home-button:hover {  
+            background-color: #005f73; /* Darker shade on hover */  
+        }  
+    </style>  
+</head>  
+<body>  
+    <button class="home-button" onclick="window.location.href='index.html';">Home</button> <!-- Home button -->  
+    <div class="container">  
+        <h1>Prayer Requests</h1>  
+        <div id="request-container"></div>  
+        <div class="request-form">  
+            <h2>Submit Your Prayer Request</h2>  
+            <div class="input-container">  
+                <input type="text" id="request-input" placeholder="Type your prayer request here">  
+                <input type="text" id="name-input" placeholder="Your name (optional)">  
+            </div>  
+            <button id="submit-request">Submit</button>  
+        </div>  
+    </div>  
+
+    <script>  
+        document.addEventListener('DOMContentLoaded', () => {  
+            const requestContainer = document.getElementById('request-container');  
+            const submitButton = document.getElementById('submit-request');  
+            const requestInput = document.getElementById('request-input');  
+            const nameInput = document.getElementById('name-input');  
+
+            // Function to load requests from localStorage  
+            function loadRequests() {  
+                const requests = JSON.parse(localStorage.getItem('requests')) || []; // Get requests from localStorage or initialize as empty  
+                return requests;  
+            }  
+
+            // Function to display requests  
+            function displayRequests() {  
+                const requests = loadRequests(); // Load requests  
+                requestContainer.innerHTML = ''; // Clear previous content  
+                requests.forEach((req, index) => {  
+                    const requestItem = document.createElement('div');  
+                    requestItem.className = 'request-item';  
+                    requestItem.innerHTML = `  
+                        <div><strong>${req.name}</strong>: ${req.request}</div>  
+                        <button class="remove-button" onclick="removeRequest(${index})">Remove</button>  
+                    `; // Add a remove button next to each request  
+                    requestContainer.appendChild(requestItem);  
+                });  
+            }  
+
+            // Function to submit a new prayer request  
+            submitButton.addEventListener('click', () => {  
+                const prayerRequest = requestInput.value.trim();  
+                const userName = nameInput.value.trim() || "Anonymous"; // Default to "Anonymous" if no name is provided  
+                if (prayerRequest) {  
+                    const requests = loadRequests(); // Load existing requests  
+                    requests.push({ name: userName, request: prayerRequest }); // Add new request to the array  
+                    localStorage.setItem('requests', JSON.stringify(requests)); // Save updated requests to localStorage  
+                    requestInput.value = ''; // Clear the request input  
+                    nameInput.value = ''; // Clear the name input  
+                    displayRequests(); // Refresh the request list  
+                } else {  
+                    alert("Please enter a prayer request.");  
+                }  
+            });  
+
+            // Function to remove a prayer request  
+            window.removeRequest = (index) => {  
+                const requests = loadRequests(); // Load existing requests  
+                requests.splice(index, 1); // Remove the request at the specified index  
+                localStorage.setItem('requests', JSON.stringify(requests)); // Save updated requests to localStorage  
+                displayRequests(); // Refresh the request list  
+            };  
+
+            // Initial display of requests  
+            displayRequests();  
+        });  
+    </script>  
+</body>  
+</html>

@@ -1,0 +1,47 @@
+/* Basic Reset */  
+* {  
+    margin: 0;  
+    padding: 0;  
+    box-sizing: border-box;  
+}  
+
+/* Body Style */  
+body {  
+    font-family: Arial, sans-serif; /* Default font */
+    color: white;
+}  
+
+/* Navbar Styles */  
+.navbar {  
+    position: absolute; /* Position the navbar */  
+    top: 10px; /* Position adjustments */  
+    left: 10px; /* Position adjustments */  
+    z-index: 1; /* Ensure navbar is on top */  
+}  
+
+/* Home Button Styles */  
+.nav-button {  
+    text-decoration: none; /* Remove underline */  
+    font-size: 18px; /* Button font size */  
+    color: white; /* Button text color */  
+    padding: 10px 15px; /* Button padding */  
+    background-color: #747474; /* Button background color */  
+    border-radius: 5px; /* Rounded corners */  
+}  
+
+
+
+/* Text Container Styles */  
+.text-container {  
+    max-width: 600px; /* Limit the width of the text container */  
+    margin: 20px; /* Margin around text container */ 
+}  
+
+/* Heading and Paragraph Styles */  
+h1 {  
+    font-size: 24px; /* Heading font size */  
+}  
+
+p {  
+    font-size: 16px; /* Paragraph font size */  
+}
